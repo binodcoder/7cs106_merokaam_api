@@ -1,4 +1,5 @@
 package com.binodcoder.merokaamapi.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -9,6 +10,8 @@ public class JobSeekerProfile {
     @Id
     private Integer userAccountId;
 
+    //new 1 line
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_account_id")
     @MapsId
@@ -33,6 +36,8 @@ public class JobSeekerProfile {
     @Column(nullable = true, length = 64)
     private String profilePhoto;
 
+    //new 1 line
+    @JsonIgnore
     @OneToMany(targetEntity = Skills.class, cascade = CascadeType.ALL, mappedBy = "jobSeekerProfile")
     private List<Skills> skills;
 
