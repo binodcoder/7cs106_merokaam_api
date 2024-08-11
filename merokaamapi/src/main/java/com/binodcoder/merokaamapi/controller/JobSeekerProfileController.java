@@ -2,8 +2,9 @@ package com.binodcoder.merokaamapi.controller;
 
 import com.binodcoder.merokaamapi.entity.JobSeekerProfile;
 import com.binodcoder.merokaamapi.entity.Users;
-import com.binodcoder.merokaamapi.entity.UsersType;
 import com.binodcoder.merokaamapi.service.JobSeekerProfileService;
+import com.binodcoder.merokaamapi.util.AuthUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,17 +19,21 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class JobSeekerProfileController {
 
+    private final AuthUtil authUtil;
+
     private final JobSeekerProfileService jobSeekerProfileService;
 
-    public JobSeekerProfileController(JobSeekerProfileService jobSeekerProfileService) {
+    @Autowired
+    public JobSeekerProfileController(AuthUtil authUtil, JobSeekerProfileService jobSeekerProfileService) {
+        this.authUtil = authUtil;
         this.jobSeekerProfileService = jobSeekerProfileService;
     }
 
     @PostMapping("/create")
     public JobSeekerProfile create(@RequestBody JobSeekerProfile jobSeekerProfile) {
         jobSeekerProfile.setUserAccountId(0);
-        jobSeekerProfile.setUserId(new Users(6, "..", "..", true, null, new UsersType(1, "", null)));
-        return jobSeekerProfileService.addNew(jobSeekerProfile);
+        Users users = authUtil.loggedInUser();
+        return jobSeekerProfileService.addNew(jobSeekerProfile, users);
     }
 
     @GetMapping("/profile_only")

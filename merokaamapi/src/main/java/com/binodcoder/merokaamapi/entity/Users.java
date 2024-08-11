@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -11,27 +13,37 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+
     @Column(unique = true)
     private String email;
+
     @NotEmpty
     private String password;
+
     private boolean isActive;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date registrationDate;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
-    private UsersType userTypeId;
+    private Set<Role> roles = new HashSet<>();
 
     public Users() {
     }
 
-    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
+    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, Set<Role> roles) {
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.isActive = isActive;
         this.registrationDate = registrationDate;
-        this.userTypeId = userTypeId;
+        this.roles = roles;
+    }
+
+    public Users(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public int getUserId() {
@@ -74,12 +86,12 @@ public class Users {
         this.registrationDate = registrationDate;
     }
 
-    public UsersType getUserTypeId() {
-        return userTypeId;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserTypeId(UsersType userTypeId) {
-        this.userTypeId = userTypeId;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -90,7 +102,7 @@ public class Users {
                 ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 ", registrationDate=" + registrationDate +
-                ", userTypeId=" + userTypeId +
+                ", role=" + roles +
                 '}';
     }
 }

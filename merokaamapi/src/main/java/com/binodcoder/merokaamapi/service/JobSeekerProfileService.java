@@ -1,6 +1,7 @@
 package com.binodcoder.merokaamapi.service;
 
 import com.binodcoder.merokaamapi.entity.JobSeekerProfile;
+import com.binodcoder.merokaamapi.entity.Users;
 import com.binodcoder.merokaamapi.repository.JobSeekerProfileRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,8 @@ public class JobSeekerProfileService {
         this.jobSeekerProfileRepository = jobSeekerProfileRepository;
     }
 
-    public JobSeekerProfile addNew(JobSeekerProfile jobSeekerProfile) {
+    public JobSeekerProfile addNew(JobSeekerProfile jobSeekerProfile, Users users) {
+        jobSeekerProfile.setUserId(users);
         return jobSeekerProfileRepository.save(jobSeekerProfile);
     }
 
