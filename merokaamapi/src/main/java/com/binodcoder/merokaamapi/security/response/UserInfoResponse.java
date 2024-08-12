@@ -4,21 +4,24 @@ import java.util.List;
 
 public class UserInfoResponse {
     private int id;
-    private String jwtToken;
-    private String username;
-    private List<String> roles;
 
-    public UserInfoResponse(int id, String username, List<String> roles, String jwtToken) {
+    private String jwtToken;
+
+    private String username;
+
+    private String userTypeName;
+
+    public UserInfoResponse(int id, String username, String userTypeName, String jwtToken) {
         this.id = id;
         this.username = username;
-        this.roles = roles;
+        this.userTypeName = userTypeName;
         this.jwtToken = jwtToken;
     }
 
     public UserInfoResponse(int id, String username, List<String> roles) {
         this.id = id;
         this.username = username;
-        this.roles = roles;
+        this.userTypeName = userTypeName;
     }
 
     public int getId() {
@@ -45,12 +48,12 @@ public class UserInfoResponse {
         this.username = username;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getUserTypeName() {
+        return userTypeName;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setUserTypeName(String userTypeName) {
+        this.userTypeName = userTypeName;
     }
 }
 
