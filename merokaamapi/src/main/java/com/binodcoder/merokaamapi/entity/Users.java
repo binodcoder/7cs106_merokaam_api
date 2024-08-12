@@ -2,10 +2,7 @@ package com.binodcoder.merokaamapi.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -27,18 +24,19 @@ public class Users {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
-    private Set<Role> roles = new HashSet<>();
+    private UsersType userTypeId;
+//    private Set<Role> roles = new HashSet<>();
 
     public Users() {
     }
 
-    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, Set<Role> roles) {
+    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.isActive = isActive;
         this.registrationDate = registrationDate;
-        this.roles = roles;
+        this.userTypeId = userTypeId;
     }
 
     public Users(String email, String password) {
@@ -86,12 +84,12 @@ public class Users {
         this.registrationDate = registrationDate;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public UsersType getUserTypeId() {
+        return userTypeId;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setUserTypeId(UsersType userTypeId) {
+        this.userTypeId = userTypeId;
     }
 
     @Override
@@ -102,7 +100,7 @@ public class Users {
                 ", password='" + password + '\'' +
                 ", isActive=" + isActive +
                 ", registrationDate=" + registrationDate +
-                ", role=" + roles +
+                ", role=" + userTypeId +
                 '}';
     }
 }

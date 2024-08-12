@@ -1,13 +1,8 @@
 package com.binodcoder.merokaamapi.security;
-import com.binodcoder.merokaamapi.entity.Role;
-import com.binodcoder.merokaamapi.entity.Users;
-import com.binodcoder.merokaamapi.repository.RoleRepository;
-import com.binodcoder.merokaamapi.repository.UserRepository;
 import com.binodcoder.merokaamapi.security.jwt.AuthEntryPointJwt;
 import com.binodcoder.merokaamapi.security.jwt.AuthTokenFilter;
 import com.binodcoder.merokaamapi.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Set;
 
 @Configuration
 @EnableWebSecurity

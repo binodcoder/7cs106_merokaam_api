@@ -1,9 +1,8 @@
 package com.binodcoder.merokaamapi.controller;
-import com.binodcoder.merokaamapi.entity.AppRole;
-import com.binodcoder.merokaamapi.entity.Role;
 import com.binodcoder.merokaamapi.entity.Users;
-import com.binodcoder.merokaamapi.repository.RoleRepository;
+import com.binodcoder.merokaamapi.entity.UsersType;
 import com.binodcoder.merokaamapi.repository.UserRepository;
+import com.binodcoder.merokaamapi.repository.UserTypeRepository;
 import com.binodcoder.merokaamapi.security.jwt.JwtUtils;
 import com.binodcoder.merokaamapi.security.request.LoginRequest;
 import com.binodcoder.merokaamapi.security.request.SignupRequest;
@@ -40,7 +39,7 @@ public class AuthController {
     UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    UserTypeRepository roleRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -76,36 +75,35 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
         // Create new user's account
-        Users user = new Users(signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword())
+        Users user = new Users(0, signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()),
+                true,
+                new Date(),
+                new UsersType(0, "Recruiter", null)
         );
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByRoleName(AppRole.Recruiter)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByRoleName(AppRole.Recruiter)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "seller":
-                        Role modRole = roleRepository.findByRoleName(AppRole.Recruiter)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByRoleName(AppRole.Recruiter)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-        user.setRoles(roles);
+//        Set<String> strRoles = signUpRequest.getRole();
+//        Set<UsersType> roles = new HashSet<>();
+//        if (strRoles == null) {
+//            UsersType userRole = roleRepository.findByUserTypeName("Recruiter")
+//                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//            roles.add(userRole);
+//        } else {
+//            strRoles.forEach(role -> {
+//                switch (role) {
+//                    case "recruiter":
+//                        UsersType adminRole = roleRepository.findByUserTypeName("Recruiter")
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(adminRole);
+//                        break;
+//
+//                    default:
+//                        UsersType userRole = roleRepository.findByUserTypeName("Job Seeker")
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(userRole);
+//                }
+//            });
+//        }
+//        user.setUserTypeId(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

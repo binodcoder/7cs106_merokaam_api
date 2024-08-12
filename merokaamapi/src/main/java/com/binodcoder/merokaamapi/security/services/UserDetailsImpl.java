@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
@@ -18,40 +15,39 @@ public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private int id;
-
-    private String username;
+    // private String username;
 
     private String email;
 
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    // private Collection<? extends GrantedAuthority> authorities;
+    private String userTypeName;
 
-    public UserDetailsImpl(int id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(int id, String email, String password,
+                           String userTypeName) {
         this.id = id;
-        this.username = username;
         this.email = email;
         this.password = password;
-        this.authorities = authorities;
+        this.userTypeName = userTypeName;
     }
 
     public static UserDetailsImpl build(Users user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
-                .collect(Collectors.toList());
+//        List<GrantedAuthority> authorities = user.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
+//                .collect(Collectors.toList());
+        String userTypeName = user.getUserTypeId().getUserTypeName();
         return new UserDetailsImpl(
                 user.getUserId(),
                 user.getEmail(),
-                user.getEmail(),
                 user.getPassword(),
-                authorities);
+                userTypeName);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return null;
     }
 
     public int getId() {
@@ -69,7 +65,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
