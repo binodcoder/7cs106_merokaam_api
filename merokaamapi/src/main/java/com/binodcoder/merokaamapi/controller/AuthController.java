@@ -39,7 +39,7 @@ public class AuthController {
     UserRepository userRepository;
 
     @Autowired
-    UserTypeRepository roleRepository;
+    UserTypeRepository userTypeRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -49,7 +49,7 @@ public class AuthController {
         Authentication authentication;
         try {
             authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         } catch (AuthenticationException exception) {
             Map<String, Object> map = new HashMap<>();
             map.put("message", "Bad credentials");

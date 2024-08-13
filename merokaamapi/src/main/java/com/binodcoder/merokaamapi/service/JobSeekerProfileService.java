@@ -5,6 +5,7 @@ import com.binodcoder.merokaamapi.entity.Users;
 import com.binodcoder.merokaamapi.repository.JobSeekerProfileRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,5 +23,9 @@ public class JobSeekerProfileService {
 
     public Optional<JobSeekerProfile> getOne(Integer id) {
         return jobSeekerProfileRepository.findById(id);
+    }
+
+    public List<JobSeekerProfile> getAll() {
+        return jobSeekerProfileRepository.findAll();
     }
 }

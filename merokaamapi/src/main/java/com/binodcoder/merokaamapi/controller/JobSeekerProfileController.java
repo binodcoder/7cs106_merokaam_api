@@ -8,15 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/job-profile")
 public class JobSeekerProfileController {
 
     private final AuthUtil authUtil;
@@ -31,14 +29,19 @@ public class JobSeekerProfileController {
 
     @PostMapping("/create")
     public JobSeekerProfile create(@RequestBody JobSeekerProfile jobSeekerProfile) {
-        jobSeekerProfile.setUserAccountId(0);
         Users users = authUtil.loggedInUser();
         return jobSeekerProfileService.addNew(jobSeekerProfile, users);
     }
 
-    @GetMapping("/profile_only")
-    public ResponseEntity<JobSeekerProfile> getOne() {
-        Optional<JobSeekerProfile> optionalProfile = jobSeekerProfileService.getOne(5);
+    @GetMapping("/profile")
+    public ResponseEntity<List<JobSeekerProfile>> getAll() {
+        List<JobSeekerProfile> jobSeekerProfiles = jobSeekerProfileService.getAll();
+        return new ResponseEntity<>(jobSeekerProfiles, HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/edit/{id}")
+    public ResponseEntity<JobSeekerProfile> getOne(@PathVariable("id") Integer id) {
+        Optional<JobSeekerProfile> optionalProfile = jobSeekerProfileService.getOne(id);
         return new ResponseEntity<>(optionalProfile.get(), HttpStatus.OK);
     }
 }
