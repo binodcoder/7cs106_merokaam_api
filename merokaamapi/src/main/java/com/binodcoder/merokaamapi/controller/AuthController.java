@@ -23,7 +23,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,9 +62,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-//        List<String> roles = userDetails.getAuthorities().stream()
-//                .map(item -> item.getAuthority())
-//                .collect(Collectors.toList());
         String userTypeNames = userDetails.getUserTypeName();
         UserInfoResponse response = new UserInfoResponse(userDetails.getId(),
                 userDetails.getUsername(), userTypeNames, jwtCookie.toString());
@@ -82,29 +82,6 @@ public class AuthController {
                 new Date(),
                 new UsersType(0, "Recruiter", null)
         );
-//        Set<String> strRoles = signUpRequest.getRole();
-//        Set<UsersType> roles = new HashSet<>();
-//        if (strRoles == null) {
-//            UsersType userRole = roleRepository.findByUserTypeName("Recruiter")
-//                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//            roles.add(userRole);
-//        } else {
-//            strRoles.forEach(role -> {
-//                switch (role) {
-//                    case "recruiter":
-//                        UsersType adminRole = roleRepository.findByUserTypeName("Recruiter")
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(adminRole);
-//                        break;
-//
-//                    default:
-//                        UsersType userRole = roleRepository.findByUserTypeName("Job Seeker")
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(userRole);
-//                }
-//            });
-//        }
-//        user.setUserTypeId(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
