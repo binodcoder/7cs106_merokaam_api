@@ -1,10 +1,8 @@
 package com.binodcoder.merokaamapi.service;
-
 import com.binodcoder.merokaamapi.entity.JobSeekerProfile;
 import com.binodcoder.merokaamapi.entity.Users;
 import com.binodcoder.merokaamapi.repository.JobSeekerProfileRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

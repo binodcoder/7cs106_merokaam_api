@@ -2,6 +2,7 @@ package com.binodcoder.merokaamapi.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,6 @@ public class Users {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
     private UsersType userTypeId;
-//    private Set<Role> roles = new HashSet<>();
 
     public Users() {
     }

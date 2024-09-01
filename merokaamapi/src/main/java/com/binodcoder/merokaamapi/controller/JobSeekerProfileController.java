@@ -7,7 +7,6 @@ import com.binodcoder.merokaamapi.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +39,12 @@ public class JobSeekerProfileController {
     }
 
     @GetMapping("/profile/edit/{id}")
+    public ResponseEntity<JobSeekerProfile> edit(@PathVariable("id") Integer id) {
+        Optional<JobSeekerProfile> optionalProfile = jobSeekerProfileService.getOne(id);
+        return new ResponseEntity<>(optionalProfile.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/{id}")
     public ResponseEntity<JobSeekerProfile> getOne(@PathVariable("id") Integer id) {
         Optional<JobSeekerProfile> optionalProfile = jobSeekerProfileService.getOne(id);
         return new ResponseEntity<>(optionalProfile.get(), HttpStatus.OK);
