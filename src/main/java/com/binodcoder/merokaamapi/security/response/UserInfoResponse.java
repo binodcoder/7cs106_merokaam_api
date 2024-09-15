@@ -3,7 +3,7 @@ package com.binodcoder.merokaamapi.security.response;
 import java.util.List;
 
 public class UserInfoResponse {
-    private int id;
+    private Long id;
 
     private String jwtToken;
 
@@ -11,24 +11,24 @@ public class UserInfoResponse {
 
     private String userTypeName;
 
-    public UserInfoResponse(int id, String username, String userTypeName, String jwtToken) {
+    public UserInfoResponse(Long id, String username, String userTypeName, String jwtToken) {
         this.id = id;
         this.username = username;
         this.userTypeName = userTypeName;
         this.jwtToken = jwtToken;
     }
 
-    public UserInfoResponse(int id, String username,   String userTypeName) {
+    public UserInfoResponse(Long id, String username,   String userTypeName) {
         this.id = id;
         this.username = username;
         this.userTypeName = userTypeName;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

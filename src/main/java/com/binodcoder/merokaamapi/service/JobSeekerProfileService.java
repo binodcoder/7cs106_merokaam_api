@@ -31,7 +31,7 @@ public class JobSeekerProfileService {
 
     public void deleteJobProfile(Long id) {
         JobSeekerProfile jobSeekerProfile = jobSeekerProfileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("JobSeekerProfile", "profileId", id));
+                .orElseThrow(() -> new ResourceNotFoundException("JobSeekerProfile", "userAccountId", id));
         jobSeekerProfileRepository.delete(jobSeekerProfile);
     }
 

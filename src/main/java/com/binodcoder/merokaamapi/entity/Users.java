@@ -10,7 +10,7 @@ import java.util.Date;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private Long userId;
 
     @Column(unique = true)
     private String email;
@@ -30,7 +30,7 @@ public class Users {
     public Users() {
     }
 
-    public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
+    public Users(Long userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
         this.userId = userId;
         this.email = email;
         this.password = password;
@@ -39,16 +39,19 @@ public class Users {
         this.userTypeId = userTypeId;
     }
 
-    public Users(String email, String password) {
+    public Users(String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
         this.email = email;
         this.password = password;
+        this.isActive=isActive;
+        this.registrationDate=registrationDate;
+        this.userTypeId=userTypeId;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
