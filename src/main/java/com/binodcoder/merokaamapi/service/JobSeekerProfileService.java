@@ -21,8 +21,9 @@ public class JobSeekerProfileService {
         return jobSeekerProfileRepository.save(jobSeekerProfile);
     }
 
+
     public Optional<JobSeekerProfile> getOne(Long id) {
-        return jobSeekerProfileRepository.findById(id);
+             return jobSeekerProfileRepository.findById(id);
     }
 
     public List<JobSeekerProfile> getAll() {
@@ -35,7 +36,7 @@ public class JobSeekerProfileService {
         jobSeekerProfileRepository.delete(jobSeekerProfile);
     }
 
-    public void updateJobProfile(JobSeekerProfile jobSeekerProfile,Long id) {
+    public void updateJobProfile(JobSeekerProfile jobSeekerProfile, Long id) {
         jobSeekerProfile.setUserAccountId(id);
         jobSeekerProfileRepository.save(jobSeekerProfile);
     }

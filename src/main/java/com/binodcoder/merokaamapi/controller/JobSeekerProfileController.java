@@ -2,6 +2,7 @@ package com.binodcoder.merokaamapi.controller;
 
 import com.binodcoder.merokaamapi.entity.JobSeekerProfile;
 import com.binodcoder.merokaamapi.entity.Users;
+import com.binodcoder.merokaamapi.exceptions.ResourceNotFoundException;
 import com.binodcoder.merokaamapi.service.JobSeekerProfileService;
 import com.binodcoder.merokaamapi.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,10 @@ public class JobSeekerProfileController {
     @GetMapping("/profile/{id}")
     public ResponseEntity<JobSeekerProfile> getOne(@PathVariable("id") Long id) {
         Optional<JobSeekerProfile> optionalProfile = jobSeekerProfileService.getOne(id);
-        return new ResponseEntity<>(optionalProfile.get(), HttpStatus.OK);
+        // If the profile is not found, throw a ResourceNotFoundException
+        JobSeekerProfile profile = optionalProfile.orElseThrow(() ->
+                new ResourceNotFoundException("JobSeekerProfile", "id", id));
+        return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
     @DeleteMapping("/profile/{id}")
