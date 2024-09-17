@@ -26,7 +26,13 @@ public class MyGlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         //new line for adjustment
-        apiError.setMessage(errors.get("password"));
+
+        if(errors.get("password")!=null){
+            apiError.setMessage(errors.get("password"));
+        } else{
+            apiError.setMessage(errors.get("email"));
+        }
+
         apiError.setErrors(errors);
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
