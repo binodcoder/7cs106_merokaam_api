@@ -9,14 +9,14 @@ import java.util.Set;
 @Data
 public class SignupRequest {
 
-    @NotBlank
+    @NotBlank(message = "Email is required.")
     @Size(max = 50)
-    @Email
+    @Email(message = "Please provide a valid email address.")
     private String email;
 
     private Set<String> role;
 
-    @NotBlank
+    @NotBlank(message = "Password is required.")
     @Size(min = 6, max = 40)
     private String password;
 

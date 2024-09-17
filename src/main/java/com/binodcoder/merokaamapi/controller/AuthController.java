@@ -1,6 +1,8 @@
 package com.binodcoder.merokaamapi.controller;
+import com.binodcoder.merokaamapi.dto.ApiError;
 import com.binodcoder.merokaamapi.entity.Users;
 import com.binodcoder.merokaamapi.entity.UsersType;
+import com.binodcoder.merokaamapi.exceptions.EmailAlreadyExistsException;
 import com.binodcoder.merokaamapi.repository.UserRepository;
 import com.binodcoder.merokaamapi.repository.UserTypeRepository;
 import com.binodcoder.merokaamapi.security.jwt.JwtUtils;
@@ -73,7 +75,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+            throw new EmailAlreadyExistsException("Email is already in use!");
         }
         // Create new user's account
         Users user = new Users(  signUpRequest.getEmail(),

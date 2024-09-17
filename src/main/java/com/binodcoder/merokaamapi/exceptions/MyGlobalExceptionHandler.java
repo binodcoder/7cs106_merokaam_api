@@ -1,6 +1,7 @@
 package com.binodcoder.merokaamapi.exceptions;
 
 import com.binodcoder.merokaamapi.dto.APIResponse;
+import com.binodcoder.merokaamapi.dto.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,14 +15,20 @@ import java.util.Map;
 @RestControllerAdvice
 public class MyGlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> myMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        Map<String, String> response = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach(err -> {
-            String fieldName = ((FieldError) err).getField();
-            String message = err.getDefaultMessage();
-            response.put(fieldName, message);
+    public ResponseEntity<ApiError> myMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        ApiError apiError = new ApiError();
+//        apiError.setMessage("Validation failed");
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
         });
-        return new ResponseEntity<Map<String, String>>(response, HttpStatus.BAD_REQUEST);
+        //new line for adjustment
+        apiError.setMessage(errors.get("password"));
+        apiError.setErrors(errors);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -34,7 +41,19 @@ public class MyGlobalExceptionHandler {
     @ExceptionHandler(APIException.class)
     public ResponseEntity<APIResponse> myAPIException(APIException e) {
         String message = e.getMessage();
-        APIResponse apiResponse=new APIResponse(message, false);
+        APIResponse apiResponse = new APIResponse(message, false);
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ApiError> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
+        ApiError apiError = new ApiError();
+        apiError.setMessage(ex.getMessage());
+        apiError.setErrors(new HashMap<>());
+
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+
+
 }
